@@ -8,7 +8,7 @@ async function bootstrap() {
   // Allowed origins
   const allowedOrigins = [
     'http://localhost:3001', // local dev
-    'https://prome-attendance-activity-frontend-9dowrsbry.vercel.app', // Vercel frontend
+    'https://prome-attendance-activity-frontend-37qib5dap.vercel.app', // Vercel frontend
   ];
 
   app.enableCors({
