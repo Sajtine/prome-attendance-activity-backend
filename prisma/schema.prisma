@@ -8,7 +8,7 @@ datasource db {
 
 model Attendance {
   id       Int    @id @default(autoincrement())
-  ref_id   String @unique @db.VarChar(10)
+  ref_id   String @unique 
   fullname String
   schedule String
 }

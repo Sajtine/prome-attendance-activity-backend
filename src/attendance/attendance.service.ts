@@ -46,8 +46,8 @@ export class AttendanceService {
         schedule: true,
       },
       orderBy: {
-        id: 'asc'
-      }
+        id: 'asc',
+      },
     });
   }
 
@@ -61,15 +61,24 @@ export class AttendanceService {
         schedule: true
       },
       where: {
-        schedule: schedule
-      }
-    })
+        schedule: schedule,
+      },
+    });
   }
 
   // Get a single attendance record by ID
-  getAttendanceById(id: number) {
-    return this.prisma.attendance.findUnique({ where: { id } });
+  async getAttendanceById(id: number) {
+    const attendance = await this.prisma.attendance.findUnique({
+      where: { id },
+    });
+
+    if (!attendance) {
+      throw new BadRequestException(`Attendance with id ${id} not found`);
+    }
+
+    return attendance;
   }
+
   //get user by unique reference id
   async getUserByRefId(ref_id: string) {
     if (!ref_id?.trim()) {
@@ -89,18 +98,49 @@ export class AttendanceService {
   // }
 
   // With websocket broadcasting
-  async updateAttendance(id: number, data: {fullname: string; schedule: string}) {
+  async updateAttendance(
+    id: number,
+    data: { fullname: string; schedule: string },
+  ) {
     const updated = await this.prisma.attendance.update({
       where: { id },
       data,
     });
 
-    console.log("Broadcasting attendance_update:", updated);
+    console.log('Broadcasting attendance_update:', updated);
     this.attendanceGateway.server.emit('attendance_update', {
-      type: "update",
+      type: 'update',
       data: updated,
     });
 
     return updated;
+  }
+
+  async getSearchResult(input: string) {
+    const search = input?.trim();
+
+    if (!search) return []; // prevents returning everything on empty input
+
+    try {
+      return await this.prisma.attendance.findMany({
+        where: {
+          OR: [
+            {
+              fullname: { contains: search, mode: 'insensitive' },
+            },
+            {
+              ref_id: { contains: search, mode: 'insensitive' },
+            },
+            {
+              schedule: { contains: search, mode: 'insensitive' },
+            },
+          ],
+        },
+        orderBy: { id: 'asc' },
+      });
+    } catch (error) {
+      console.error('Error in getSearchResult:', error);
+      throw new Error('Failed to fetch search results');
+    }
   }
 }
