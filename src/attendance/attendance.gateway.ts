@@ -1,14 +1,13 @@
-import { WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
-import { Server } from "socket.io";
+import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { Server } from 'socket.io';
 
 @WebSocketGateway({
   cors: {
     origin: 'http://localhost:3001',
     methods: ['GET', 'POST'],
-    credentials: true
-  }
+    credentials: true,
+  },
 })
-
 export class AttendanceGateway {
   @WebSocketServer()
   server: Server;
@@ -23,8 +22,7 @@ export class AttendanceGateway {
   }
 
   // Update attendance
-  broadcastAttendanceUpdate(payload: any){
+  broadcastAttendanceUpdate(payload: any) {
     this.server.emit('attendance_update', payload);
   }
-  
 }
