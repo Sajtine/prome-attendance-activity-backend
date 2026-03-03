@@ -42,6 +42,7 @@ export class AttendanceService {
       select: {
         id: true,
         fullname: true,
+        ref_id: true,
         schedule: true,
       },
       orderBy: {
@@ -56,6 +57,7 @@ export class AttendanceService {
       select: {
         id: true,
         fullname: true,
+        ref_id: true,
         schedule: true
       },
       where: {
