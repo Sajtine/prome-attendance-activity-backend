@@ -41,7 +41,9 @@ export class AttendanceService {
     return this.prisma.attendance.findMany({
       select: {
         id: true,
+        ref_id: true,
         fullname: true,
+        ref_id: true,
         schedule: true,
       },
       orderBy: {
@@ -55,8 +57,10 @@ export class AttendanceService {
     return this.prisma.attendance.findMany({
       select: {
         id: true,
+        ref_id: true,
         fullname: true,
-        schedule: true,
+        ref_id: true,
+        schedule: true
       },
       where: {
         schedule: schedule,
