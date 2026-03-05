@@ -43,7 +43,6 @@ export class AttendanceService {
         id: true,
         ref_id: true,
         fullname: true,
-        ref_id: true,
         schedule: true,
       },
       orderBy: {
