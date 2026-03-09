@@ -116,6 +116,7 @@ export class AttendanceService {
     return updated;
   }
 
+  // Search for attendance records
   async getSearchResult(input: string) {
     const search = input?.trim();
 
@@ -142,5 +143,14 @@ export class AttendanceService {
       console.error('Error in getSearchResult:', error);
       throw new Error('Failed to fetch search results');
     }
+  }
+
+  // delete attendance record
+  async deleteAttendance(id: number) {
+    const deleted = await this.prisma.attendance.delete({
+      where: { id },
+    });
+    
+    return deleted;
   }
 }

@@ -54,4 +54,10 @@ export class AttendanceController {
   getAttendanceById(@Param('id') id: number) {
     return this.attendanceService.getAttendanceById(+id);
   }
+
+  // delete attendance record
+  @Post('/delete/:id')
+  deleteAttendance(@Param('id') id: number) {
+    return this.attendanceService.deleteAttendance(+id);
+  }
 }
